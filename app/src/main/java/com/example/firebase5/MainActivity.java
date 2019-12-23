@@ -1,5 +1,6 @@
 package com.example.firebase5;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.QuickContactBadge;
 import android.widget.TextView;
 
 import com.example.firebase5.model.Produto;
@@ -26,6 +28,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 public class MainActivity extends AppCompatActivity {
 
 //    private DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
@@ -34,12 +39,27 @@ public class MainActivity extends AppCompatActivity {
     private ImageView foto;
     private Button enviar;
     private TextView txtNome;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-         txtNome = findViewById(R.id.text_nome);
+        txtNome = findViewById(R.id.text_nome);
+        enviar = findViewById(R.id.button_enviar);
 
+        enviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                foto.setDrawingCacheEnabled(true);
+                foto.buildDrawingCache();
+
+                Bitmap bitmap = foto.getDrawingCache();
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 75,stream);
+
+                byte[] dadosImage = stream.toByteArray();
+            }
+        });
 //        DatabaseReference usuarios = ref.child("USUARIOS");
 //        DatabaseReference usuariosPesquisa = usuarios.child("-LwjSEdAaNaWww-sUB8t");
 //        DatabaseReference produtos = ref.child("PRODUTOS");

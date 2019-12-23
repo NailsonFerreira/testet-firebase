@@ -3,15 +3,15 @@ package com.example.firebase5.model;
 public class Usuario {
 
     private String nome;
-    private int id;
+    private int idade;
     private String nascimento;
 
     public Usuario() {
     }
 
-    public Usuario(String nome, int id, String nascimento) {
+    public Usuario(String nome, int idade, String nascimento) {
         this.nome = nome;
-        this.id = id;
+        this.idade = idade;
         this.nascimento = nascimento;
     }
 
@@ -23,12 +23,12 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public int getId() {
-        return id;
+    public int getIdade() {
+        return idade;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdade(int idade) {
+        this.idade = idade;
     }
 
     public String getNascimento() {
@@ -37,5 +37,14 @@ public class Usuario {
 
     public void setNascimento(String nascimento) {
         this.nascimento = nascimento;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("{\"nome\":\"%s\"," +
+                "\"idade\":\"%s\"," +
+                "\"nascimento\":\"%s\"" +
+                "}",
+                nome,idade,nascimento);
     }
 }

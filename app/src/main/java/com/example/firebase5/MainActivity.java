@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.example.firebase5.model.Produto;
 import com.example.firebase5.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AdditionalUserInfo;
@@ -27,9 +28,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         txtNome = findViewById(R.id.text_nome);
         enviar = findViewById(R.id.button_enviar);
-
+        foto = findViewById(R.id.imageFoto);
         enviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +63,20 @@ public class MainActivity extends AppCompatActivity {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 75,stream);
 
                 byte[] dadosImage = stream.toByteArray();
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference imagem = storageReference.child("imagens");
+
+                String nome = UUID.randomUUID().toString();
+                StorageReference imageJPG = imagem.child(nome+".jpeg");
+                UploadTask uploadTask = imageJPG.putBytes(dadosImage);
+
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
             }
         });
 //        DatabaseReference usuarios = ref.child("USUARIOS");
